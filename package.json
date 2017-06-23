@@ -1,0 +1,27 @@
+{
+  "name": "tile-csv-merge",
+  "version": "0.0.2",
+  "description": "merge census csv files",
+  "main": "merge_columns.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/royhobbstn/tileCSVmerge.git"
+  },
+  "keywords": [
+    "acs",
+    "seq",
+    "csv"
+  ],
+  "author": "Daniel Trone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/royhobbstn/tileCSVmerge/issues"
+  },
+  "homepage": "https://github.com/royhobbstn/tileCSVmerge#readme",
+  "dependencies": {
+    "csv": "^1.1.1"
+  }
+}

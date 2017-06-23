@@ -12,7 +12,11 @@ var file1 = new Promise((resolve, reject) => {
                 reject(err);
             }
 
-            resolve(output);
+            var cut_last = output.map(function(d) {
+                return d.slice(0, -1);
+            });
+            
+            resolve(cut_last);
         });
 
     });
@@ -30,7 +34,7 @@ var file2 = new Promise((resolve, reject) => {
             }
 
             var sliced = output.map(function(d) {
-                return d.slice(54);
+                return d.slice(54, -1);
             });
 
             resolve(sliced);
@@ -52,7 +56,7 @@ var file3 = new Promise((resolve, reject) => {
 
 
             var sliced = output.map(function(d) {
-                return d.slice(54);
+                return d.slice(54, -1);
             });
 
             resolve(sliced);

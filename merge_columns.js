@@ -2,7 +2,7 @@ var csv = require('csv');
 var fs = require('fs');
 
 var file1 = new Promise((resolve, reject) => {
-    fs.readFile('./run/readyfiles/heseq001.csv', 'utf8', function(err, data) {
+    fs.readFile('./run/readyfiles/eseq001.csv', 'utf8', function(err, data) {
         if (err) {
             reject(err);
         }
@@ -23,7 +23,7 @@ var file1 = new Promise((resolve, reject) => {
 });
 
 var file2 = new Promise((resolve, reject) => {
-    fs.readFile('./run/readyfiles/heseq002.csv', 'utf8', function(err, data) {
+    fs.readFile('./run/readyfiles/eseq002.csv', 'utf8', function(err, data) {
         if (err) {
             reject(err);
         }
@@ -44,7 +44,7 @@ var file2 = new Promise((resolve, reject) => {
 });
 
 var file3 = new Promise((resolve, reject) => {
-    fs.readFile('./run/readyfiles/heseq003.csv', 'utf8', function(err, data) {
+    fs.readFile('./run/readyfiles/eseq003.csv', 'utf8', function(err, data) {
         if (err) {
             reject(err);
         }

@@ -37,6 +37,6 @@ cd ..
 
 gsutil mb gs://acs1115_multisequence
 
-node merge_columns.js
+node --max-old-space-size=48192 merge_columns.js
 
 gsutil cp ./result/*.csv gs://acs1115_multisequence

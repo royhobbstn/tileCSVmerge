@@ -9,6 +9,8 @@ Prerequisites: You must have gsutil installed.  Using a Google Cloud Instance wi
 This is a very memory intensive process.  I suggest you use a high-RAM cloud instance to run this script.
 
 ```
+sudo apt-get install git
+
 git clone https://github.com/royhobbstn/tileCSVmerge.git
 
 cd tileCSVmerge

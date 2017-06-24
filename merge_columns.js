@@ -1,4 +1,38 @@
 var csv = require('csv');
+
+var fs = require('fs');
+
+
+fs.createReadStream(__dirname+'/fs_read.csv').pipe(parser);
+
+
+var parser = csv.parse();
+var transformer = csv.transform(function(data){
+  return data.map(function(value){return value.toUpperCase()});
+});
+var stringifier = csv.stringify();
+
+
+parser.on('readable', function(){
+  while(data = parser.read()){
+    transformer.write(data);
+  }
+});
+
+transformer.on('readable', function(){
+  while(data = transformer.read()){
+    stringifier.write(data);
+  }
+});
+
+stringifier.on('readable', function(){
+  while(data = stringifier.read()){
+    process.stdout.write(data);
+  }
+});
+
+
+var csv = require('csv');
 var fs = require('fs');
 
 var file1 = new Promise((resolve, reject) => {

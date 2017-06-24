@@ -1,12 +1,19 @@
+
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 nvm install node
 
+
+rm -r node_modules
+rm -r run
+rm -r result
+
 npm install
 
 mkdir run
+mkdir result
 
 cd run
 
@@ -29,9 +36,9 @@ wget https://storage.googleapis.com/acs1115_stage/eseq001.csv; wget https://stor
 n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e ",\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt eseq$i.csv > ./readyfiles/eseq$i.csv; done;
 
 
-head -1000 ./readyfiles/eseq001.csv > ./readyfiles/heseq001.csv
-head -1000 ./readyfiles/eseq002.csv > ./readyfiles/heseq002.csv
-head -1000 ./readyfiles/eseq003.csv > ./readyfiles/heseq003.csv
+head -100000 ./readyfiles/eseq001.csv > ./readyfiles/heseq001.csv
+head -100000 ./readyfiles/eseq002.csv > ./readyfiles/heseq002.csv
+head -100000 ./readyfiles/eseq003.csv > ./readyfiles/heseq003.csv
 
 cd ..
 

@@ -36,9 +36,12 @@ wget https://storage.googleapis.com/acs1115_stage/eseq001.csv; wget https://stor
 n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e ",\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt eseq$i.csv > ./readyfiles/eseq$i.csv; done;
 
 
-head -100000 ./readyfiles/eseq001.csv > ./readyfiles/heseq001.csv
-head -100000 ./readyfiles/eseq002.csv > ./readyfiles/heseq002.csv
-head -100000 ./readyfiles/eseq003.csv > ./readyfiles/heseq003.csv
+head -1000 ./readyfiles/eseq001.csv > ./readyfiles/heseq001.csv
+tail -1000 ./readyfiles/eseq001.csv >> ./readyfiles/heseq001.csv
+head -1000 ./readyfiles/eseq002.csv > ./readyfiles/heseq002.csv
+tail -1000 ./readyfiles/eseq002.csv >> ./readyfiles/heseq002.csv
+head -1000 ./readyfiles/eseq003.csv > ./readyfiles/heseq003.csv
+tail -1000 ./readyfiles/eseq003.csv >> ./readyfiles/heseq003.csv
 
 cd ..
 

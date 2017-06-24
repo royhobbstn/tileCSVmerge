@@ -1,3 +1,6 @@
+run
+*.csv
+
 # Logs
 logs
 *.log

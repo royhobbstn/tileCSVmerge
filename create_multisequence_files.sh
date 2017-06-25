@@ -1,10 +1,10 @@
 
 echo "install nodeJS";
-wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-nvm install node
+# wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# nvm install node
 
 echo "clean any previous installations";
 rm -r node_modules
@@ -16,12 +16,14 @@ npm install
 
 mkdir run
 mkdir result
-mkdir result_orig
 
 cd run
 
 mkdir schemas
 mkdir readyfiles
+mkdir nocol
+mkdir dl
+
 
 echo "downloading census metadata";
 curl --progress-bar https://www2.census.gov/programs-surveys/acs/summary_file/2015/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt -O
@@ -38,6 +40,7 @@ echo "appending additional columns to each table according to metadata"
 while IFS=',' read f1 f2 f3 f4 f5; do echo -n ","`printf $f2`"_"`printf %03d $f4`"" >> "./schemas/schema$f3.txt"; done < columns_list.csv;
 
 echo "downloading all census estimate sequence files in bucket"
+cd dl
 # gsutil cp gs://acs1115_stage/e*.csv
 
 wget https://storage.googleapis.com/acs1115_stage/eseq001.csv; 
@@ -46,8 +49,13 @@ wget https://storage.googleapis.com/acs1115_stage/eseq002.csv;
 
 wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
 
+# get rid of newline
+for file in *.csv ; do sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
+cd ..
+
 echo "concatenating schema and data files for each sequence"
-n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e ",\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt eseq$i.csv > ./readyfiles/eseq$i.csv; done;
+n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e "\b,\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt ./nocol/neweseq$i.csv > ./readyfiles/eseq$i.csv; done;
+
 
 cd ..
 
@@ -57,8 +65,11 @@ gsutil mb gs://acs1115_multisequence
 echo "running nodejs program to strip first 55 columns of redundant information"
 node merge_columns.js
 
-paste -d',' ./result_orig/eseq001.csv ./result/eseq002.csv ./result/eseq003.csv > paste.csv
+paste ./run/readyfiles/eseq001.csv ./result/eseq002.csv ./result/eseq003.csv > paste.csv
 
+# paste ./run/readyfiles/eseq004.csv ./result/eseq005.csv ./result/eseq006.csv > paste.csv
+
+# paste ./run/readyfiles/eseq007.csv ./result/eseq008.csv ./result/eseq009.csv > paste.csv
 
 echo "loading all processed data into storage bucket"
 gsutil cp ./result/*.csv gs://acs1115_multisequence

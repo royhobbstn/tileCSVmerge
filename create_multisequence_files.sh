@@ -49,12 +49,18 @@ wget https://storage.googleapis.com/acs1115_stage/eseq002.csv;
 
 wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
 
+wget https://storage.googleapis.com/acs1115_stage/eseq004.csv; 
+
+wget https://storage.googleapis.com/acs1115_stage/eseq005.csv; 
+
+wget https://storage.googleapis.com/acs1115_stage/eseq006.csv;
+
 # get rid of newline
 for file in *.csv ; do sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
 cd ..
 
 echo "concatenating schema and data files for each sequence"
-n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e "\b,\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt ./nocol/neweseq$i.csv > ./readyfiles/eseq$i.csv; done;
+n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e ",\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt ./nocol/neweseq$i.csv > ./readyfiles/eseq$i.csv; done;
 
 
 cd ..
@@ -65,11 +71,11 @@ gsutil mb gs://acs1115_multisequence
 echo "running nodejs program to strip first 55 columns of redundant information"
 node merge_columns.js
 
-paste ./run/readyfiles/eseq001.csv ./result/eseq002.csv ./result/eseq003.csv > paste.csv
+paste -d "" ./run/readyfiles/eseq001.csv ./result/eseq002.csv ./result/eseq003.csv > eseq_001_002_003.csv
 
-# paste ./run/readyfiles/eseq004.csv ./result/eseq005.csv ./result/eseq006.csv > paste.csv
+paste -d "" ./run/readyfiles/eseq004.csv ./result/eseq005.csv ./result/eseq006.csv > eseq_004_005_006.csv
 
-# paste ./run/readyfiles/eseq007.csv ./result/eseq008.csv ./result/eseq009.csv > paste.csv
+
 
 echo "loading all processed data into storage bucket"
 gsutil cp ./result/*.csv gs://acs1115_multisequence

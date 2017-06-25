@@ -1,10 +1,10 @@
 
 echo "install nodeJS";
-# wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-# nvm install node
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+nvm install node
 
 echo "clean any previous installations";
 rm -r node_modules
@@ -41,19 +41,9 @@ while IFS=',' read f1 f2 f3 f4 f5; do echo -n ","`printf $f2`"_"`printf %03d $f4
 
 echo "downloading all census estimate sequence files in bucket"
 cd dl
-# gsutil cp gs://acs1115_stage/e*.csv
 
-wget https://storage.googleapis.com/acs1115_stage/eseq001.csv; 
+gsutil cp gs://acs1115_stage/e*.csv
 
-wget https://storage.googleapis.com/acs1115_stage/eseq002.csv; 
-
-wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
-
-wget https://storage.googleapis.com/acs1115_stage/eseq004.csv; 
-
-wget https://storage.googleapis.com/acs1115_stage/eseq005.csv; 
-
-wget https://storage.googleapis.com/acs1115_stage/eseq006.csv;
 
 # get rid of newline
 for file in *.csv ; do sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
@@ -65,8 +55,6 @@ n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e ",\n" >> ./schemas/schema0$i
 
 cd ..
 
-echo "creating google storage bucket for stripped sequence files"
-gsutil mb gs://acs1115_multisequence
 
 echo "running nodejs program to strip first 55 columns of redundant information"
 node merge_columns.js
@@ -75,7 +63,15 @@ paste -d "" ./run/readyfiles/eseq001.csv ./result/eseq002.csv ./result/eseq003.c
 
 paste -d "" ./run/readyfiles/eseq004.csv ./result/eseq005.csv ./result/eseq006.csv > eseq_004_005_006.csv
 
+paste -d "" ./run/readyfiles/eseq007.csv ./result/eseq008.csv ./result/eseq009.csv > eseq_007_008_009.csv
 
+paste -d "" ./run/readyfiles/eseq010.csv ./result/eseq011.csv ./result/eseq012.csv > eseq_010_011_012.csv
+
+
+gsutil rm -r gs://acs1115_multisequence
+
+echo "creating google storage bucket for stripped sequence files"
+gsutil mb gs://acs1115_multisequence
 
 echo "loading all processed data into storage bucket"
 gsutil cp ./result/*.csv gs://acs1115_multisequence

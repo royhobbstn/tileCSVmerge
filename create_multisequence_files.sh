@@ -42,7 +42,8 @@ while IFS=',' read f1 f2 f3 f4 f5; do echo -n ","`printf $f2`"_"`printf %03d $f4
 echo "downloading all census estimate sequence files in bucket"
 cd dl
 
-gsutil cp gs://acs1115_stage/e*.csv
+
+gsutil cp gs://acs1115_stage/e*.csv .
 
 
 # get rid of newline

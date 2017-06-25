@@ -47,11 +47,11 @@ gsutil cp gs://acs1115_stage/e*.csv .
 
 
 # get rid of newline
-for file in *.csv ; do sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
+for file in *.csv ; do echo "remove newline $file"; sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
 cd ..
 
 echo "concatenating schema and data files for each sequence"
-n=122;for i in $(seq -f "%03g" ${n}); do echo -n -e ",\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt ./nocol/neweseq$i.csv > ./readyfiles/eseq$i.csv; done;
+n=122;for i in $(seq -f "%03g" ${n}); do echo "concatenating with schema $i"; echo -n -e ",\n" >> ./schemas/schema0$i.txt; cat ./schemas/schema0$i.txt ./nocol/neweseq$i.csv > ./readyfiles/eseq$i.csv; done;
 
 
 cd ..

@@ -16,6 +16,11 @@ fs.readdir('./run/readyfiles/', (err, files) => {
             })).pipe(
             csv.stringify()).pipe(stream);
 
+        stream.on('error', function(error) {
+            console.log(file + ' ERROR');
+            console.log(error);
+        });
+
         stream.on('finish', function() {
             console.log(file + ' has been written');
         });

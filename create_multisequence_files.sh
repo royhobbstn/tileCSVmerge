@@ -43,11 +43,11 @@ echo "downloading all census estimate sequence files in bucket"
 cd dl
 
 
-# gsutil cp gs://acs1115_stage/e*.csv .
+gsutil cp gs://acs1115_stage/e*.csv .
 
-wget https://storage.googleapis.com/acs1115_stage/eseq001.csv;
-wget https://storage.googleapis.com/acs1115_stage/eseq002.csv; 		
-wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
+# wget https://storage.googleapis.com/acs1115_stage/eseq001.csv;
+# wget https://storage.googleapis.com/acs1115_stage/eseq002.csv; 		
+# wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
  
 # get rid of newline
 for file in *.csv ; do echo "remove newline $file"; sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
@@ -66,11 +66,11 @@ node merge_columns.js
 
 paste -d "" ./run/readyfiles/eseq001.csv ./result/eseq002.csv ./result/eseq003.csv > ./finished/eseq_001_002_003.csv
 
-# paste -d "" ./run/readyfiles/eseq004.csv ./result/eseq005.csv ./result/eseq006.csv > ./finished/eseq_004_005_006.csv
+paste -d "" ./run/readyfiles/eseq004.csv ./result/eseq005.csv ./result/eseq006.csv > ./finished/eseq_004_005_006.csv
 
-# paste -d "" ./run/readyfiles/eseq007.csv ./result/eseq008.csv ./result/eseq009.csv > ./finished/eseq_007_008_009.csv
+paste -d "" ./run/readyfiles/eseq007.csv ./result/eseq008.csv ./result/eseq009.csv > ./finished/eseq_007_008_009.csv
 
-# paste -d "" ./run/readyfiles/eseq010.csv ./result/eseq011.csv ./result/eseq012.csv > ./finished/eseq_010_011_012.csv
+paste -d "" ./run/readyfiles/eseq010.csv ./result/eseq011.csv ./result/eseq012.csv > ./finished/eseq_010_011_012.csv
 
 
 gsutil rm -r gs://acs1115_multisequence

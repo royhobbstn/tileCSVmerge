@@ -6,7 +6,7 @@ Used to stage data to be joined with census vector tilesets.
 
 Prerequisites: You must have gsutil installed.  Using a Google Cloud Instance will set this up automatically.
 
-This is a very memory intensive process.  I suggest you use a high-RAM cloud instance to run this script.
+Don't skimp on your instance, and use a SSD drive.
 
 ```
 sudo apt-get install git

@@ -43,11 +43,13 @@ echo "downloading all census estimate sequence files in bucket"
 cd dl
 
 
-gsutil cp gs://acs1115_stage/e*.csv .
+# gsutil cp gs://acs1115_stage/e*.csv .
 
-# wget https://storage.googleapis.com/acs1115_stage/eseq001.csv;
-# wget https://storage.googleapis.com/acs1115_stage/eseq002.csv; 		
-# wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
+wget https://storage.googleapis.com/acs1115_stage/eseq001.csv;
+wget https://storage.googleapis.com/acs1115_stage/eseq002.csv; 		
+wget https://storage.googleapis.com/acs1115_stage/eseq003.csv;
+wget https://storage.googleapis.com/acs1115_stage/eseq113.csv;
+
  
 # get rid of newline
 for file in *.csv ; do echo "remove newline $file"; sed 's/,[^,]\+$//' $file > ../nocol/new$file; done;
@@ -60,6 +62,11 @@ n=122;for i in $(seq -f "%03g" ${n}); do echo "concatenating with schema $i"; ec
 cd ..
 
 mkdir finished
+
+echo "dealing with odd case eseq113"
+sed 's/",,,,/",,,,,/g' ./run/readyfiles/eseq113.csv > modeseq113.csv
+rm -rf ./run/readyfiles/eseq113.csv
+mv modeseq113.csv ./run/readyfiles/eseq113.csv
 
 echo "running nodejs program to strip first 55 columns of redundant information"
 node merge_columns.js

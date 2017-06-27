@@ -64,7 +64,8 @@ cd ..
 mkdir finished
 
 echo "dealing with odd case eseq113"
-sed 's/",,,,/",,,,,/g' ./run/readyfiles/eseq113.csv > modeseq113.csv
+# perl -p -e 's/",,,,\n/",,,,,\n/' ./run/readyfiles/eseq113.csv > modeseq113.csv
+perl -p -e 's/,,\n/,,,\n/' ./run/readyfiles/eseq113.csv > modeseq113.csv
 rm -rf ./run/readyfiles/eseq113.csv
 mv modeseq113.csv ./run/readyfiles/eseq113.csv
 
